@@ -1,16 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
 
-    <title>Cache Simulation LRU</title>
-    <meta name="description" content="Cache Simulation LRU" />
-    <meta name="Tsotne Gvadzabia" />
+<head>
+  <meta charset="utf-8" />
 
-    
-  </head>
+  <title>Cache Simulation LRU</title>
+  <meta name="description" content="Cache Simulation LRU" />
+  <meta name="Tsotne Gvadzabia" />
+</head>
 
-  <body>
-    <script src="js/scripts.js"></script>
-  </body>
+<body>
+  <h1>Title</h1>
+  <section class="example"></section>
+  <section class="inputer">
+    <label for="define">Definition:</label>
+    <input type="text" id="define" name="define" placeholder="8 4 2 2" required /><br /><br />
+    <textarea id="input" rows="4" cols="50"></textarea>
+    <br />
+    <button id="startSim">Simulate</button>
+  </section>
+
+  <section class="asw">
+    <h4 id="display">Answer Here</h4>
+  </section>
+
+  <script>
+
+    getDef = () =>{
+      return  document.getElementById("define").value
+    }
+    getInput = () =>{
+      return document.getElementById("input").value
+    }
+
+    startSimulation = () => {
+      
+      var defined = getDef();
+      var question = getInput();
+      
+      // Make ToDo defined in correct format with spaces
+
+      
+
+    };
+    document.getElementById("startSim").addEventListener("click", startSimulation);
+  </script>
+</body>
+
 </html>
