@@ -90,11 +90,20 @@
       }
       console.log(arrAddress);
 
-      var onlyTags = [];
+      var arrOnlyTags = [];
       var addressLength = arrAddress.length;
-      
+      var removeChar = parseInt(indexSize + offsetSize);
+
+      for(var y = 0; y < addressLength;y++){
+
+        var temp = arrAddress[y].slice(0, -removeChar);
+        arrOnlyTags.push(temp);
+
+      }
+      console.log(arrOnlyTags);
 
     };
+    
     document.getElementById("startSim").addEventListener("click", startSimulation);
   </script>
 </body>
