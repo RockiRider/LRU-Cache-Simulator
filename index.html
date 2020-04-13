@@ -38,8 +38,60 @@
       var defined = getDef();
       var question = getInput();
       
-      // Make ToDo defined in correct format with spaces
+      // ToDo defined in correct format with spaces
 
+      var arrDefinition = defined.split(" ");
+      var arrQuestions = question.match(/[^\r\n]+/g);
+      
+      // To Do check if array is correct length of 4.
+
+
+      // Declerations Below
+      const w = arrDefinition[0];
+      const c = arrDefinition[1];
+      const b = arrDefinition[2];
+      const k = arrDefinition[3];
+
+
+      let indexSizeCalc = c/b;
+      let offsetSizeCalc = b/k;
+
+
+      const indexSize = Math.log2(c/b/Math.log2(2));  // Maybe take away this log first
+      const offsetSize = Math.log2(b/k)/Math.log2(2); // Take away this log last
+      const tagSize = w - indexSize - offsetSize; //Might need a + instead of a -
+
+
+
+
+      //Console Logs Below
+      console.log(indexSize + " index");
+      console.log(offsetSize + " off");
+      console.log(tagSize + " tag");
+      console.log(arrQuestions)
+
+
+      var qLength = arrQuestions.length;
+
+      var arrAddress = [];
+
+      for(var i = 0; i<qLength;i++){
+        let toNum = parseInt(arrQuestions[i]);
+        let binaryVal = toNum.toString(2);
+
+        //Ensure same number of binary bits
+        if(binaryVal.length < w){
+            let difference = w - binaryVal.length;
+            for(var z = 0; z<difference;z++){
+              binaryVal = '0'+binaryVal;
+            }
+        }
+        arrAddress.push(binaryVal);
+      }
+      console.log(arrAddress);
+
+      var onlyTags = [];
+      var addressLength = arrAddress.length;
       
 
     };
