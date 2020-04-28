@@ -19,9 +19,7 @@ The first line of the input is used to describe the cache. Using the Example A
 - **B** is the number of bytes in one cache block. This number will be a divisor of C.
 - **k** is the number of lines in a block. This number will be a divisor of B.
 
-#### Example A
-The expected input is something like this:
-
+#### Example A Input
 32 1024 64 4
 
 409
@@ -45,7 +43,7 @@ The expected input is something like this:
 1172
 
 
-The expected output:
+#### Example A Output
 
 
 MMMM
