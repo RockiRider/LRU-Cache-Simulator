@@ -11,8 +11,8 @@ The first line of the input is used to describe the cache. Using the Example A
 - 64 = B
 - 4 = k
 
-- **W** is the number of bits in one word. This number will be a multiple of 8
-- **C** is the number of data bytes in the cache. This number will be a power of 2. (In C, we do not count the space needed to store tags, just the space needed to store data.)
+* **W** is the number of bits in one word. This number will be a multiple of 8
+-**C** is the number of data bytes in the cache. This number will be a power of 2. (In C, we do not count the space needed to store tags, just the space needed to store data.)
 - **B** is the number of bytes in one cache block. This number will be a divisor of C.
 - **k** is the number of lines in a block. This number will be a divisor of B.
 
