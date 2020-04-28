@@ -26,6 +26,8 @@
 
   <script>
 
+     
+
     getDef = () =>{
       return  document.getElementById("define").value
     }
@@ -34,7 +36,7 @@
     }
 
     startSimulation = () => {
-      
+      var output= "";
       var defined = getDef();
       var question = getInput();
       
@@ -57,11 +59,14 @@
       let offsetSizeCalc = b/k;
 
 
-      const indexSize = Math.log2(c/b/Math.log2(2));  // Maybe take away this log first
-      const offsetSize = Math.log2(b/k)/Math.log2(2); // Take away this log last
-      const tagSize = w - indexSize - offsetSize; //Might need a + instead of a -
+      var indexSize = Math.log2(indexSizeCalc);  // Maybe take away this log first
+      var offsetSize = Math.log2(offsetSizeCalc); // Take away this log last
+      const tagSize = w - indexSize - offsetSize; 
 
 
+      if(offsetSizeCalc = 2){
+        offsetSize = 2;
+      }
 
 
       //Console Logs Below
@@ -90,11 +95,13 @@
       }
       console.log(arrAddress);
 
+      //Tag Generation
+
       var arrOnlyTags = [];
       var addressLength = arrAddress.length;
       var removeChar = parseInt(indexSize + offsetSize);
 
-      for(var y = 0; y < addressLength;y++){
+      for(var y = 0; y < addressLength; y++){
 
         var temp = arrAddress[y].slice(0, -removeChar);
         arrOnlyTags.push(temp);
@@ -102,8 +109,30 @@
       }
       console.log(arrOnlyTags);
 
+
+      // Grouping
+      arrCurrent = [];
+     
+      for(var g = 0; g < addressLength; g++){
+        if(!arrCurrent.includes(arrOnlyTags[g])){
+          if(arrCurrent.length<b){
+            arrCurrent.push(arrOnlyTags[g]);
+            output = output + "M";
+          }else if(arrCurrent.length = b){
+            arrCurrent.shift();
+            arrCurrent.push(arrOnlyTags[g]);
+            output = output + "M";
+          }else{
+            alert("ERROR");
+          }
+        }else{
+          output = output + "C";
+        }
+          
+      }
+      document.getElementById("display").innerHTML = output;
     };
-    
+
     document.getElementById("startSim").addEventListener("click", startSimulation);
   </script>
 </body>
