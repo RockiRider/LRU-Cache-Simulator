@@ -22,15 +22,25 @@ The first line of the input is used to describe the cache. Using the Example A
 #### Example A
 The expected input is something like this:
 32 1024 64 4
+
 409
+
 658
+
 915
+
 1172
+
 661
+
 1429
+
 1168
+
 403
+
 925
+
 1172
 
 
