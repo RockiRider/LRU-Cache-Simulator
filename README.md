@@ -21,6 +21,7 @@ The first line of the input is used to describe the cache. Using the Example A
 
 #### Example A
 The expected input is something like this:
+
 32 1024 64 4
 
 409
@@ -48,7 +49,9 @@ The expected output:
 
 
 MMMM
+
 CMCM
+
 MC
 
 
