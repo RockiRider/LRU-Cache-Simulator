@@ -227,6 +227,9 @@
     <section class="example allSec">
       <h3>Example</h3>
       <p>Follow this layout in order for the simulator to work.</p>
+      <h4 style="padding-bottom: 0; color: red;">-Warning-</h4>
+      <p style="margin-top: 5px;">Ensure to leave a space between each cache definition.</p>
+      <p>Ensure to leave a new line after each cache.</p>
       <label for="define"> Cache Definition:</label>
       <input type="text" name="define" placeholder="32 1024 64 4" disabled /><br />
       <br />
@@ -275,7 +278,7 @@
 
     <section class="asw allSec">
       <h3>Output</h3>
-      <h4 id="display"></h4>
+      <p id="display"></p>
       <div class="btnOutArea">
         <button id="copyToClip">Copy to Clipboard</button>
       </div>
@@ -376,6 +379,17 @@
       return output;
     }
 
+    refine = (input,k) => {
+      var arr = input.match(new RegExp('.{1,' + k + '}', 'g'));
+      var finished = ""
+      arr.forEach(element => {
+        finished += element + "<br>";
+      });
+
+
+      return finished;
+    }
+
     startSimulation = () => {
       var output = "";
       var defined = getDef();
@@ -418,8 +432,9 @@
       console.log(tagSize + " tag");
       console.log(arrQuestions)
 
+      var finalOutput = refine(output, k);
 
-      document.getElementById("display").innerHTML = output;
+      document.getElementById("display").innerHTML = finalOutput;
       document.getElementById("index").innerHTML = indexSize;
       document.getElementById("tag").innerHTML = tagSize;
       document.getElementById("offset").innerHTML = offsetSize;
