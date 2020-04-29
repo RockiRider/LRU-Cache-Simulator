@@ -228,8 +228,11 @@
       <h3>Example</h3>
       <p>Follow this layout in order for the simulator to work.</p>
       <h4 style="padding-bottom: 0; color: red;">-Warning-</h4>
-      <p style="margin-top: 5px;">Ensure to leave a space between each cache definition.</p>
-      <p>Ensure to leave a new line after each cache.</p>
+      <ul>
+        <li><p>Only enter Positive Integers</p></li>
+        <li><p>Ensure to leave a new line after each cache.</p></li>
+        <li><p style="margin-top: 5px;">Ensure to leave a space between each cache definition.</p></li>
+      </ul>
       <label for="define"> Cache Definition:</label>
       <input type="text" name="define" placeholder="32 1024 64 4" disabled /><br />
       <br />
@@ -280,7 +283,7 @@
       <h3>Output</h3>
       <p id="display"></p>
       <div class="btnOutArea">
-        <button id="copyToClip">Copy to Clipboard</button>
+        <button id="copyToClip">Copy Answer to Clipboard</button>
       </div>
       <table>
         <tr>
@@ -418,9 +421,12 @@
       var offsetSize = Math.log2(offsetSizeCalc);
       var tagSize = w - indexSize - offsetSize;
 
+      
       if (c == b && b == k) {
+        //If fully associative cache
         var output = fullAsso(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
       } else if (b == k) {
+        //If directly mapped cache
         var output = dirctMap(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
       } else {
         var output = norm(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
