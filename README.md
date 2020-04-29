@@ -57,6 +57,6 @@ MC
 
 #### Taks To Do
 - [x] Fix Bug
-- [] Finish CSS
-- [] Finish Direct Mapping
-- [] Finish Fully Associative
+- [ ] Finish CSS
+- [ ] Finish Direct Mapping
+- [ ] Finish Fully Associative
