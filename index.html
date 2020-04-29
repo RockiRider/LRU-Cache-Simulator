@@ -314,7 +314,12 @@
       return "Fully associative cache."
     }
     dirctMap = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
-      return "Directly mapped cache"
+      let blockSize = c/b;
+      if(blockSize == 1){
+        return "C and B are the same."
+      }else{
+
+      }
     }
     norm = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
       var qLength = arrQuestions.length;
@@ -347,6 +352,10 @@
         var temp = arrAddress[y].slice(0, -removeChar);
         arrOnlyTags.push(temp);
 
+      }
+      //Fully associative!!
+      if(removeChar == 0){
+        arrOnlyTags = arrAddress;
       }
       console.log(arrOnlyTags);
 
@@ -425,7 +434,7 @@
       
       if (c == b && b == k) {
         //If fully associative cache
-        var output = fullAsso(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
+        var output = norm(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
       } else if (b == k) {
         //If directly mapped cache
         var output = dirctMap(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
@@ -433,10 +442,6 @@
         var output = norm(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
       }
 
-      //Console Logs Below
-      console.log(indexSizeCalc + " index");
-      console.log(offsetSizeCalc + " off");
-      console.log(tagSize + " tag");
       console.log(arrQuestions)
 
       var finalOutput = refine(output, k);
@@ -446,13 +451,18 @@
       document.getElementById("tag").innerHTML = tagSize;
       document.getElementById("offset").innerHTML = offsetSize;
 
+      //Handle Errors
       if(w > 1024){
         alert("W Exceeds 1024 Limit!");
         document.getElementById("display").innerHTML = "Error";
-      }else if(c > Math.pow(2, w)){
+      }
+      /**
+      else if(c > Math.pow(2, w)){
         alert("C (The size of the cache) exceeds the number of available addresses!");
         document.getElementById("display").innerHTML = "Error";
-      }else if(k*c/b > Math.pow(2,20)){
+      }
+      **/
+      else if(k*c/b > Math.pow(2,20)){
         alert("kC/B is more than 2^20");
         document.getElementById("display").innerHTML = "Error";
       }else{
