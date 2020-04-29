@@ -36,15 +36,17 @@
       padding: 10px;
     }
 
-    .example ul{
+    .example ul {
       margin-top: 0;
     }
-    .example h4{
-      
+
+    .example h4 {
+
       margin: 0px;
       padding: 2px;
       font-weight: 400;
     }
+
     .inputer {
       margin: auto;
       width: 60%;
@@ -83,7 +85,7 @@
       margin-bottom: 20px;
       cursor: pointer;
     }
-    
+
 
     .asw {
       margin: auto;
@@ -131,9 +133,10 @@
 
 
     }
+
     span {
-        transition: all 0.3s;
-      }
+      transition: all 0.3s;
+    }
 
     .btn::before,
     .btn::after {
@@ -218,13 +221,14 @@
       </ul>
       <p>Input the cache description as well as the cache and click Simulate</p>
       <p>The output will be a String containing the letter C, M or both.</p>
-      <p>For each memory access in the input, the page will print a 'C' if it is served by the cache, and print 'M' if it is served by the memory.</p>
+      <p>For each memory access in the input, the page will print a 'C' if it is served by the cache, and print 'M' if
+        it is served by the memory.</p>
     </section>
     <section class="example allSec">
       <h3>Example</h3>
-      <p>Follow this layout  in order for the simulator to work.</p>
+      <p>Follow this layout in order for the simulator to work.</p>
       <label for="define"> Cache Definition:</label>
-      <input type="text"  name="define" placeholder="32 1024 64 4" disabled /><br/>
+      <input type="text" name="define" placeholder="32 1024 64 4" disabled /><br />
       <br />
       <ul id="showerr">
         <li>W = 32</li>
@@ -232,7 +236,7 @@
         <li>B = 64</li>
         <li>k = 4</li>
       </ul>
-      <label  for="show">Cache:</label>
+      <label for="show">Cache:</label>
       <textarea id="show" rows="11" cols="22" disabled>409 
 658
 915
@@ -244,10 +248,10 @@
 925
 1172
 </textarea>
-    <h3>Output:</h3>
-    <h4>MMMM </h4>
-    <h4>CMCM </h4>
-    <h4>MC</h4>
+      <h3>Output:</h3>
+      <h4>MMMM </h4>
+      <h4>CMCM </h4>
+      <h4>MC</h4>
 
     </section>
     <section class="inputer allSec">
@@ -263,7 +267,7 @@
       </div>
       <div class="simArea">
         <div class="btn sim" id="startSim">
-          <span >Simulate</span>
+          <span>Simulate</span>
         </div>
       </div>
 
@@ -277,15 +281,15 @@
       </div>
       <table>
         <tr>
-          <th>Index Size</th>
+          <th>Index Size:</th>
           <td id="index"></td>
         </tr>
         <tr>
-          <th>Offset Size</th>
+          <th>Offset Size:</th>
           <td id="offset"></td>
         </tr>
         <tr>
-          <th>Tag Size</th>
+          <th>Tag Size:</th>
           <td id="tag"></td>
         </tr>
       </table>
@@ -300,48 +304,13 @@
     getInput = () => {
       return document.getElementById("input").value
     }
-
-    startSimulation = () => {
-      var output = "";
-      var defined = getDef();
-      var question = getInput();
-
-      // ToDo defined in correct format with spaces
-
-      var arrDefinition = defined.split(" ");
-      var arrQuestions = question.match(/[^\r\n]+/g);
-
-      // To Do check if array is correct length of 4.
-
-
-      // Declerations Below
-      const w = arrDefinition[0];
-      const c = arrDefinition[1];
-      const b = arrDefinition[2];
-      const k = arrDefinition[3];
-
-
-      let indexSizeCalc = c / b;
-      let offsetSizeCalc = b / k;
-
-
-      var indexSize =Math.log2(indexSizeCalc); 
-      var offsetSize =  Math.log2(offsetSizeCalc);
-      var tagSize = w - indexSize - offsetSize;
-
-      /**
-      if (offsetSizeCalc = 2) {
-        offsetSize = 2;
-      }
-      **/
-
-      //Console Logs Below
-      console.log(indexSize + " index");
-      console.log(offsetSize + " off");
-      console.log(tagSize + " tag");
-      console.log(arrQuestions)
-
-
+    fullAsso = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
+      return "Fully associative cache."
+    }
+    dirctMap = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
+      return "Directly mapped cache"
+    }
+    norm = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
       var qLength = arrQuestions.length;
 
       var arrAddress = [];
@@ -378,13 +347,14 @@
 
       // Grouping
       arrCurrent = [];
+      var output="";
 
       for (var g = 0; g < addressLength; g++) {
         if (!arrCurrent.includes(arrOnlyTags[g])) {
-          if (arrCurrent.length < b) {
+          if (arrCurrent.length < k) {
             arrCurrent.push(arrOnlyTags[g]);
             output = output + "M";
-          } else if (arrCurrent.length = b) {
+          } else if (arrCurrent.length = k) {
             arrCurrent.shift();
             arrCurrent.push(arrOnlyTags[g]);
             output = output + "M";
@@ -393,9 +363,62 @@
           }
         } else {
           output = output + "C";
+          let temp = " ";
+          let found = arrCurrent.lastIndexOf(arrOnlyTags[g]);
+          arrCurrent.push(temp);
+          let tempfind = arrCurrent.lastIndexOf(temp);
+          arrCurrent.copyWithin(tempfind, found, found + 1);
+          arrCurrent.splice(found,1);
+
         }
 
       }
+      return output;
+    }
+
+    startSimulation = () => {
+      var output = "";
+      var defined = getDef();
+      var question = getInput();
+
+      // ToDo defined in correct format with spaces
+
+      var arrDefinition = defined.split(" ");
+      var arrQuestions = question.match(/[^\r\n]+/g);
+
+      // To Do check if array is correct length of 4.
+
+
+      // Declerations Below
+      const w = arrDefinition[0];
+      const c = arrDefinition[1];
+      const b = arrDefinition[2];
+      const k = arrDefinition[3];
+
+
+      let indexSizeCalc = c / b;
+      let offsetSizeCalc = b / k;
+
+
+      var indexSize = Math.log2(indexSizeCalc);
+      var offsetSize = Math.log2(offsetSizeCalc);
+      var tagSize = w - indexSize - offsetSize;
+
+      if (c == b && b == k) {
+        var output = fullAsso(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
+      } else if (b == k) {
+        var output = dirctMap(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
+      } else {
+        var output = norm(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
+      }
+
+      //Console Logs Below
+      console.log(indexSizeCalc + " index");
+      console.log(offsetSizeCalc + " off");
+      console.log(tagSize + " tag");
+      console.log(arrQuestions)
+
+
       document.getElementById("display").innerHTML = output;
       document.getElementById("index").innerHTML = indexSize;
       document.getElementById("tag").innerHTML = tagSize;
@@ -415,62 +438,62 @@
     //Copy Answer To Clipboard
 
     function copyToClipboard(elem) {
-	  // create hidden text element, if it doesn't already exist
-    var targetId = "_hiddenCopyText_";
-    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
-    var origSelectionStart, origSelectionEnd;
-    if (isInput) {
+      // create hidden text element, if it doesn't already exist
+      var targetId = "_hiddenCopyText_";
+      var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+      var origSelectionStart, origSelectionEnd;
+      if (isInput) {
         // can just use the original source element for the selection and copy
         target = elem;
         origSelectionStart = elem.selectionStart;
         origSelectionEnd = elem.selectionEnd;
-    } else {
+      } else {
         // must use a temporary form element for the selection and copy
         target = document.getElementById(targetId);
         if (!target) {
-            var target = document.createElement("textarea");
-            target.style.position = "absolute";
-            target.style.left = "-9999px";
-            target.style.top = "0";
-            target.id = targetId;
-            document.body.appendChild(target);
+          var target = document.createElement("textarea");
+          target.style.position = "absolute";
+          target.style.left = "-9999px";
+          target.style.top = "0";
+          target.id = targetId;
+          document.body.appendChild(target);
         }
         target.textContent = elem.textContent;
-    }
-    // select the content
-    var currentFocus = document.activeElement;
-    target.focus();
-    target.setSelectionRange(0, target.value.length);
-    
-    // copy the selection
-    var succeed;
-    try {
-    	  succeed = document.execCommand("copy");
-    } catch(e) {
+      }
+      // select the content
+      var currentFocus = document.activeElement;
+      target.focus();
+      target.setSelectionRange(0, target.value.length);
+
+      // copy the selection
+      var succeed;
+      try {
+        succeed = document.execCommand("copy");
+      } catch (e) {
         succeed = false;
-    }
-    // restore original focus
-    if (currentFocus && typeof currentFocus.focus === "function") {
+      }
+      // restore original focus
+      if (currentFocus && typeof currentFocus.focus === "function") {
         currentFocus.focus();
-    }
-    
-    if (isInput) {
+      }
+
+      if (isInput) {
         // restore prior selection
         elem.setSelectionRange(origSelectionStart, origSelectionEnd);
-    } else {
+      } else {
         // clear temporary content
         target.textContent = "";
+      }
+      return succeed;
     }
-    return succeed;
-}
 
     document.getElementById("startSim").addEventListener("click", startSimulation);
     document.getElementById("clearAll").addEventListener("click", resetAll);
     document.getElementById("clearCache").addEventListener("click", clear);
 
-    document.getElementById("copyToClip").addEventListener("click", function() {
-    copyToClipboard(document.getElementById("display"));
-});
+    document.getElementById("copyToClip").addEventListener("click", function () {
+      copyToClipboard(document.getElementById("display"));
+    });
   </script>
 </body>
 
