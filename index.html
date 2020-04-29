@@ -421,6 +421,7 @@
       var offsetSize = Math.log2(offsetSizeCalc);
       var tagSize = w - indexSize - offsetSize;
 
+
       
       if (c == b && b == k) {
         //If fully associative cache
@@ -440,10 +441,23 @@
 
       var finalOutput = refine(output, k);
 
-      document.getElementById("display").innerHTML = finalOutput;
+      
       document.getElementById("index").innerHTML = indexSize;
       document.getElementById("tag").innerHTML = tagSize;
       document.getElementById("offset").innerHTML = offsetSize;
+
+      if(w > 1024){
+        alert("W Exceeds 1024 Limit!");
+        document.getElementById("display").innerHTML = "Error";
+      }else if(c > Math.pow(2, w)){
+        alert("C (The size of the cache) exceeds the number of available addresses!");
+        document.getElementById("display").innerHTML = "Error";
+      }else if(k*c/b > Math.pow(2,20)){
+        alert("kC/B is more than 2^20");
+        document.getElementById("display").innerHTML = "Error";
+      }else{
+        document.getElementById("display").innerHTML = finalOutput;
+      }
     };
 
     // Buttons
