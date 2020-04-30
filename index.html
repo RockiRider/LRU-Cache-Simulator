@@ -229,9 +229,15 @@
       <p>Follow this layout in order for the simulator to work.</p>
       <h4 style="padding-bottom: 0; color: red;">-Warning-</h4>
       <ul>
-        <li><p>Only enter Positive Integers</p></li>
-        <li><p>Ensure to leave a new line after each cache.</p></li>
-        <li><p style="margin-top: 5px;">Ensure to leave a space between each cache definition.</p></li>
+        <li>
+          <p>Only enter Positive Integers</p>
+        </li>
+        <li>
+          <p>Ensure to leave a new line after each cache.</p>
+        </li>
+        <li>
+          <p style="margin-top: 5px;">Ensure to leave a space between each cache definition.</p>
+        </li>
       </ul>
       <label for="define"> Cache Definition:</label>
       <input type="text" name="define" placeholder="32 1024 64 4" disabled /><br />
@@ -310,88 +316,47 @@
     getInput = () => {
       return document.getElementById("input").value
     }
-    fullAsso = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
-      return "Fully associative cache."
-    }
-    dirctMap = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
-      let blockSize = c/b;
-      if(blockSize == 1){
-        return "C and B are the same."
-      }else{
+    calc = () => {
+      var output = "";
 
-      }
-    }
-    norm = (arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize) => {
-      var qLength = arrQuestions.length;
-
-      var arrAddress = [];
-
-      for (var i = 0; i < qLength; i++) {
-        let toNum = parseInt(arrQuestions[i]);
-        let binaryVal = toNum.toString(2);
-
-        //Ensure same number of binary bits
-        if (binaryVal.length < w) {
-          let difference = w - binaryVal.length;
-          for (var z = 0; z < difference; z++) {
-            binaryVal = '0' + binaryVal;
-          }
-        }
-        arrAddress.push(binaryVal);
-      }
-      console.log(arrAddress);
-
-      //Tag Generation
-
-      var arrOnlyTags = [];
-      var addressLength = arrAddress.length;
-      var removeChar = parseInt(indexSize + offsetSize);
-
-      for (var y = 0; y < addressLength; y++) {
-
-        var temp = arrAddress[y].slice(0, -removeChar);
-        arrOnlyTags.push(temp);
-
-      }
-      //Fully associative!!
-      if(removeChar == 0){
-        arrOnlyTags = arrAddress;
-      }
-      console.log(arrOnlyTags);
-
-
-      // Grouping
-      arrCurrent = [];
-      var output="";
-
-      for (var g = 0; g < addressLength; g++) {
-        if (!arrCurrent.includes(arrOnlyTags[g])) {
-          if (arrCurrent.length < k) {
-            arrCurrent.push(arrOnlyTags[g]);
-            output = output + "M";
-          } else if (arrCurrent.length = k) {
-            arrCurrent.shift();
-            arrCurrent.push(arrOnlyTags[g]);
-            output = output + "M";
-          } else {
-            alert("ERROR");
-          }
-        } else {
-          output = output + "C";
-          let temp = " ";
-          let found = arrCurrent.lastIndexOf(arrOnlyTags[g]);
-          arrCurrent.push(temp);
-          let tempfind = arrCurrent.lastIndexOf(temp);
-          arrCurrent.copyWithin(tempfind, found, found + 1);
-          arrCurrent.splice(found,1);
-
-        }
-
-      }
       return output;
     }
 
-    refine = (input,k) => {
+    //Returns true if there are multiple blocks
+    checkMult = (indexSize, offsetSize, tagSize, arrAddress) => {
+      let addressLength = arrAddress.length;
+      if (indexSize == 0) {
+        return false;
+      }
+
+      arrIndex = [];
+
+      for (var y = 0; y < addressLength; y++) {
+
+        var temp = arrAddress[y].substring(tagSize, tagSize+indexSize);
+        arrIndex.push(temp);
+
+      }
+      console.log("Here");
+      console.log(arrIndex);
+
+      var booleaner = false;
+      // Check if they all equal eachother
+      arrIndex.forEach((element,index) => {
+        if(index > 0){
+          if(element !== arrIndex[index - 1]){
+            booleaner = true;
+          }
+        }
+      })
+      console.log(booleaner);
+      return booleaner;
+    };
+    multipleBlocks = () => {
+
+    };
+
+    refine = (input, k) => {
       var arr = input.match(new RegExp('.{1,' + k + '}', 'g'));
       var finished = ""
       arr.forEach(element => {
@@ -424,35 +389,96 @@
 
       let indexSizeCalc = c / b;
       let offsetSizeCalc = b / k;
+      let blockSize = indexSizeCalc;
 
 
       var indexSize = Math.log2(indexSizeCalc);
       var offsetSize = Math.log2(offsetSizeCalc);
       var tagSize = w - indexSize - offsetSize;
-
-
-      
-      if (c == b && b == k) {
-        //If fully associative cache
-        var output = norm(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
-      } else if (b == k) {
-        //If directly mapped cache
-        var output = dirctMap(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
-      } else {
-        var output = norm(arrQuestions,w,c,b,k,indexSize,offsetSize,tagSize);
-      }
-
       console.log(arrQuestions)
 
-      var finalOutput = refine(output, k);
+      //Calculations
+      var qLength = arrQuestions.length;
 
-      
+      var arrAddress = [];
+
+      for (var i = 0; i < qLength; i++) {
+        let toNum = parseInt(arrQuestions[i]);
+        let binaryVal = toNum.toString(2);
+
+        //Ensure same number of binary bits
+        if (binaryVal.length < w) {
+          let difference = w - binaryVal.length;
+          for (var z = 0; z < difference; z++) {
+            binaryVal = '0' + binaryVal;
+          }
+        }
+        arrAddress.push(binaryVal);
+      }
+      console.log(arrAddress);
+
+      //Tag Generation
+
+      var arrOnlyTags = [];
+      var addressLength = arrAddress.length;
+      var removeChar = parseInt(indexSize + offsetSize);
+      //Checks if there are multiple blocks or not.
+      var multipleChecker = checkMult(indexSize, offsetSize, tagSize, arrAddress);
+
+      //Fully associative!!
+      if (removeChar == 0) {
+        arrOnlyTags = arrAddress;
+      } else if (multipleChecker) {
+        multipleBlocks(arrAddress, blockSize);
+      } else {
+        //Set associative
+        for (var y = 0; y < addressLength; y++) {
+
+          var temp = arrAddress[y].slice(0, -removeChar);
+          arrOnlyTags.push(temp);
+
+        }
+      }
+      console.log(arrOnlyTags);
+
+
+      // Grouping
+      arrCurrent = [];
+
+      for (var g = 0; g < addressLength; g++) {
+        if (!arrCurrent.includes(arrOnlyTags[g])) {
+          if (arrCurrent.length < k) {
+            arrCurrent.push(arrOnlyTags[g]);
+            output = output + "M";
+          } else if (arrCurrent.length = k) {
+            arrCurrent.shift();
+            arrCurrent.push(arrOnlyTags[g]);
+            output = output + "M";
+          } else {
+            alert("ERROR");
+          }
+        } else {
+          output = output + "C";
+          let temp = " ";
+          let found = arrCurrent.lastIndexOf(arrOnlyTags[g]);
+          arrCurrent.push(temp);
+          let tempfind = arrCurrent.lastIndexOf(temp);
+          arrCurrent.copyWithin(tempfind, found, found + 1);
+          arrCurrent.splice(found, 1);
+
+        }
+
+      }
+
+
+      //Final Edits
+      var finalOutput = refine(output, k);
       document.getElementById("index").innerHTML = indexSize;
       document.getElementById("tag").innerHTML = tagSize;
       document.getElementById("offset").innerHTML = offsetSize;
 
       //Handle Errors
-      if(w > 1024){
+      if (w > 1024) {
         alert("W Exceeds 1024 Limit!");
         document.getElementById("display").innerHTML = "Error";
       }
@@ -462,10 +488,10 @@
         document.getElementById("display").innerHTML = "Error";
       }
       **/
-      else if(k*c/b > Math.pow(2,20)){
+      else if (k * c / b > Math.pow(2, 20)) {
         alert("kC/B is more than 2^20");
         document.getElementById("display").innerHTML = "Error";
-      }else{
+      } else {
         document.getElementById("display").innerHTML = finalOutput;
       }
     };
