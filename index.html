@@ -316,9 +316,34 @@
     getInput = () => {
       return document.getElementById("input").value
     }
-    calc = () => {
+    calc = (addressLength,arrOnlyTags,k) => {
       var output = "";
 
+      // Grouping
+      arrCurrent = [];
+      for (var g = 0; g < addressLength; g++) {
+        if (!arrCurrent.includes(arrOnlyTags[g])) {
+          if (arrCurrent.length < k) {
+            arrCurrent.push(arrOnlyTags[g]);
+            output = output + "M";
+          } else if (arrCurrent.length = k) {
+            arrCurrent.shift();
+            arrCurrent.push(arrOnlyTags[g]);
+            output = output + "M";
+          } else {
+            alert("ERROR");
+          }
+        } else {
+          let temp = " ";
+          let found = arrCurrent.lastIndexOf(arrOnlyTags[g]);
+          arrCurrent.push(temp);
+          let tempfind = arrCurrent.lastIndexOf(temp);
+          arrCurrent.copyWithin(tempfind, found, found + 1);
+          arrCurrent.splice(found, 1);
+          output = output + "C";
+
+        }
+      }
       return output;
     }
 
@@ -333,27 +358,35 @@
 
       for (var y = 0; y < addressLength; y++) {
 
-        var temp = arrAddress[y].substring(tagSize, tagSize+indexSize);
+        var temp = arrAddress[y].substring(tagSize, tagSize + indexSize);
         arrIndex.push(temp);
 
       }
-      console.log("Here");
-      console.log(arrIndex);
 
       var booleaner = false;
       // Check if they all equal eachother
-      arrIndex.forEach((element,index) => {
-        if(index > 0){
-          if(element !== arrIndex[index - 1]){
+      arrIndex.forEach((element, index) => {
+        if (index > 0) {
+          if (element !== arrIndex[index - 1]) {
             booleaner = true;
           }
         }
       })
-      console.log(booleaner);
       return booleaner;
     };
-    multipleBlocks = () => {
 
+
+    multipleBlocks = (arrAddress, blockSize,k) => {
+      var output = "";
+      addressLength = arrAddress.length;
+
+
+
+      
+
+
+
+      return output
     };
 
     refine = (input, k) => {
@@ -428,8 +461,9 @@
       //Fully associative!!
       if (removeChar == 0) {
         arrOnlyTags = arrAddress;
+        output += calc(addressLength,arrOnlyTags,k);
       } else if (multipleChecker) {
-        multipleBlocks(arrAddress, blockSize);
+        output = multipleBlocks(arrAddress, blockSize,k);
       } else {
         //Set associative
         for (var y = 0; y < addressLength; y++) {
@@ -438,38 +472,9 @@
           arrOnlyTags.push(temp);
 
         }
+        output += calc(addressLength,arrOnlyTags,k);
       }
       console.log(arrOnlyTags);
-
-
-      // Grouping
-      arrCurrent = [];
-
-      for (var g = 0; g < addressLength; g++) {
-        if (!arrCurrent.includes(arrOnlyTags[g])) {
-          if (arrCurrent.length < k) {
-            arrCurrent.push(arrOnlyTags[g]);
-            output = output + "M";
-          } else if (arrCurrent.length = k) {
-            arrCurrent.shift();
-            arrCurrent.push(arrOnlyTags[g]);
-            output = output + "M";
-          } else {
-            alert("ERROR");
-          }
-        } else {
-          output = output + "C";
-          let temp = " ";
-          let found = arrCurrent.lastIndexOf(arrOnlyTags[g]);
-          arrCurrent.push(temp);
-          let tempfind = arrCurrent.lastIndexOf(temp);
-          arrCurrent.copyWithin(tempfind, found, found + 1);
-          arrCurrent.splice(found, 1);
-
-        }
-
-      }
-
 
       //Final Edits
       var finalOutput = refine(output, k);
