@@ -59,4 +59,4 @@ MC
 - [x] Fix Bug
 - [ ] Finish CSS
 - [ ] Finish Direct Mapping
-- [ ] Finish Fully Associative
+- [x] Finish Fully Associative
