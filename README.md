@@ -1,4 +1,4 @@
-# Cashe LRU Simulation
+# LRU Cache Simulator
 ## How it works
 The User inputs the cache description as well as the cache.
 This page then uses JavaScript to Simulate the application of an LRU Cache.
